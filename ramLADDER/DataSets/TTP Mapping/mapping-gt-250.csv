@@ -1,0 +1,251 @@
+phrase_id,phrase,true_parent,true_subtech
+1,"Analysis of the implant's behaviour revealed that it loaded a 64-bit payload DLL directly into the address space of explorer.exe using the LoadLibrary API",T1055,T1055.001
+2,"The threat actor staged a malicious DLL in a world-writable directory before forcing its loading into a legitimate browser process via a remote thread",T1055,T1055.001
+3,"Telemetry captured CreateRemoteThread calls preceded by WriteProcessMemory writing a DLL path into the memory of winlogon.exe",T1055,T1055.001
+4,"Post-exploitation activity included classic LoadLibrary-based DLL injection into the Windows print spooler process to host the implant",T1055,T1055.001
+5,"The backdoor achieved code execution within lsass.exe by planting a payload DLL and triggering its load via a remotely created thread",T1055,T1055.001
+6,"A kernel driver obtained via a BYOVD technique was used to map an unsigned payload DLL into a PPL-protected process",T1055,T1055.001
+7,"A trojanised version of a legitimate DLL was placed in the application directory to be side-loaded when the signed host binary launched",T1055,T1055.001
+8,"The loader persisted its core library by encoding it in a Registry value and reconstructing it into a host process's address space at runtime",T1055,T1055.001
+9,"On macOS endpoints, the threat group weaponised dylib hijacking to force a trusted Gatekeeper-approved application into loading a rogue shared library",T1055,T1055.001
+10,"Memory forensics revealed module stomping where the .text section of a legitimately loaded DLL was overwritten in-place with attacker shellcode",T1055,T1055.001
+11,"Mach-O injection was identified on compromised macOS hosts, with a rogue dylib loaded into a notarised application to evade detection",T1055,T1055.001
+12,"The group abused a vulnerable third-party driver to map an unsigned DLL directly into a protected system process, bypassing standard code integrity checks",T1055,T1055.001
+13,"A reflectively loaded PE image was identified mapped into the working set of svchost.exe with no corresponding file artefact on disk",T1055,T1055.002
+14,"The stager bootstrapped the second-stage implant entirely in memory using a modified ReflectiveDLLInjection loader to avoid touching the file system",T1055,T1055.002
+15,"Endpoint telemetry captured an unsigned PE being manually mapped into explorer.exe's address space using NtCreateSection and NtMapViewOfSection",T1055,T1055.002
+16,"The implant used a custom reflective loader stub that resolved all required exports at runtime, leaving no import table on disk to scan",T1055,T1055.002
+17,"Manual PE loading via NtCreateSection was used to bypass API-level hooks applied by the resident EDR product on LoadLibrary",T1055,T1055.002
+18,"The dropper used manual PE mapping to reconstruct the payload's import table and relocations in memory, avoiding the Windows loader entirely",T1055,T1055.002
+19,"The RAT loaded its plugin modules by reflectively mapping DLLs into a long-running trusted system process, making them invisible to module enumeration",T1055,T1055.002
+20,"Shellcode was written into a heap allocation within the victim process and execution was triggered by queuing a user-mode APC via NtQueueApcThread",T1055,T1055.003
+21,"The operator queued an asynchronous procedure call pointing to the implant shellcode within a suspended thread inside svchost.exe",T1055,T1055.003
+22,"An early-bird APC injection pattern was confirmed — shellcode was enqueued before the main thread of the spawned process began executing",T1055,T1055.003
+23,"VirtualAllocEx, WriteProcessMemory, and NtQueueApcThread were observed in sequence, indicating classic APC-based shellcode injection",T1055,T1055.003
+24,"The loader planted shellcode into a suspended process's thread queue before the process was resumed, a technique commonly known as early-bird injection",T1055,T1055.003
+25,"A cross-process section created with NtCreateSection was mapped into the victim process with NtMapViewOfSection to deliver the shellcode payload",T1055,T1055.003
+26,"The implant wrote shellcode into the target process heap and corrupted a SEH record to redirect execution — a variant of exception-handler hijacking",T1055,T1055.003
+27,"A Section object backed by the attacker's payload was projected into the victim's address space, avoiding the need for WriteProcessMemory",T1055,T1055.003
+28,"The Mockingjay technique was observed, with the attacker placing shellcode into an existing RWX memory region within a legitimate process",T1055,T1055.003
+29,"NtMapViewOfSection was used to share a physical memory page between the loader process and target process as a stealthy payload delivery channel",T1055,T1055.003
+30,"Memory analysis confirmed shellcode delivery via a remote APC queue, with the payload decrypted in-place immediately after the thread resumed",T1055,T1055.003
+31,"The threat actor staged shellcode inside a shared section object and projected it into a remote process to avoid detectable cross-process writes",T1055,T1055.003
+32,"APC injection via NtQueueApcThreadEx2 was used to queue execution of shellcode in an alertable thread inside a Windows system process",T1055,T1055.003
+33,"The dropper created a suspended instance of svchost.exe, unmapped its original image using NtUnmapViewOfSection, and mapped the implant in its place",T1055,T1055.004
+34,"Process hollowing was confirmed by comparing the on-disk and in-memory images of a running werfault.exe process — the PE headers did not match",T1055,T1055.004
+35,"RunPE-style hollowing was employed, with the attacker zeroing the original PE's memory and writing the decrypted payload before resuming the main thread",T1055,T1055.004
+36,"ZwUnmapViewOfSection followed by VirtualAllocEx was observed during process creation of cmd.exe, consistent with a process hollowing sequence",T1055,T1055.004
+37,"The Process Ghosting technique was identified — the payload executable was deleted mid-transaction before the process image could be mapped from it",T1055,T1055.004
+38,"A PPID-spoofed child process was created in a suspended state, hollowed, and loaded with the Cobalt Strike beacon before the thread was resumed",T1055,T1055.004
+39,"The stager performed hollow-process injection into a signed Windows binary, replacing its executable content with the RAT payload in memory",T1055,T1055.004
+40,"The actor patched the original entry point of a hollowed process to redirect execution to the implant shellcode upon thread resumption",T1055,T1055.004
+41,"Memory acquisition from the affected host revealed a mismatch between the on-disk PE and the in-memory image of a running system binary, indicating hollowing",T1055,T1055.004
+42,"Process herpaderping was used — the implant file was overwritten with innocuous content after being mapped into a child process, defeating file-based scanning",T1055,T1055.004
+43,"The implant abused the Windows thread pool by registering a malicious work callback via TpAllocWork that executed the shellcode payload on a worker thread",T1055,T1055.005
+44,"A pool party injection variant was identified in which the attacker queued shellcode execution through an I/O completion port worker thread",T1055,T1055.005
+45,"Execution of the injected payload was triggered via CreateThreadpoolWork, allowing the shellcode to run on a legitimate thread pool thread within the victim process",T1055,T1055.005
+46,"The threat actor avoided spawning new threads by scheduling shellcode through the Windows thread pool using TpPostWork, evading new-thread telemetry",T1055,T1055.005
+47,"A timer callback registered via CreateTimerQueueTimer was used to periodically invoke attacker-controlled shellcode within the targeted process",T1055,T1055.005
+48,"The loader hijacked an existing thread pool work item by overwriting its callback pointer, redirecting execution to the injected payload",T1055,T1055.005
+49,"Thread pool injection via TpAllocWork was used by the implant to execute code within svchost.exe without triggering remote-thread creation alerts",T1055,T1055.005
+50,"An alertable wait state was exploited — the actor queued an APC-based callback into a thread pool worker to execute shellcode inside the victim process",T1055,T1055.005
+51,"CreateRemoteThread was called against a long-running Chrome renderer process to host the credential harvesting module without spawning a new visible process",T1055,T1055.008
+52,"Memory forensics on the compromised workstation identified an unsigned thread in explorer.exe whose start address pointed to an unbacked memory region",T1055,T1055.008
+53,"The RAT used OpenProcess with PROCESS_ALL_ACCESS, followed by CreateRemoteThread, to initiate shellcode execution within the targeted system process",T1055,T1055.008
+54,"NtCreateThreadEx was used in place of CreateRemoteThread to inject a thread into a SYSTEM-level process while bypassing some security product hooks",T1055,T1055.008
+55,"RtlCreateUserThread was invoked to inject execution into a protected process that prevented the use of the standard CreateRemoteThread API",T1055,T1055.008
+56,"A remote thread was created inside an already-running lsass.exe process to execute a credential harvesting shellcode payload with SYSTEM privileges",T1055,T1055.008
+57,"An unsigned thread of execution was identified in spoolsv.exe originating from a separate process context, consistent with remote thread-based injection",T1055,T1055.008
+58,"The actor suspended a thread within winlogon.exe, modified its CONTEXT record to redirect RIP to the shellcode, and resumed it to trigger execution",T1055,T1055.009
+59,"SetThreadContext was called after SuspendThread to overwrite the instruction pointer of a remote thread, redirecting execution to attacker-controlled code",T1055,T1055.009
+60,"NtSetContextThread was used to alter the execution context of a suspended thread in lsass.exe, pointing it to injected shellcode in an adjacent allocation",T1055,T1055.009
+61,"The threat actor hijacked an alertable thread by modifying its CONTEXT.Rip field before calling NtAlertResumeThread to resume execution at the shellcode",T1055,T1055.009
+62,"All threads within the target process were suspended simultaneously; code was patched inline before they were resumed — a form of thread context manipulation",T1055,T1055.009
+63,"Memory analysis revealed that a thread's instruction pointer had been modified to point outside any mapped module, indicating thread context hijacking",T1055,T1055.009
+64,"The loader located a waiting thread inside svchost.exe, suspended it via NtSuspendThread, and overwrote its program counter with the payload entry point",T1055,T1055.009
+65,"The Atom Bombing technique was observed, with the actor writing shellcode into the global atom table and triggering its execution via a callback in the target process",T1055,T1055.011
+66,"A variant of atom bombing was identified in which global atom table entries were leveraged to deliver shellcode into a target process without standard injection APIs",T1055,T1055.011
+67,"PROPagate injection was used by the implant, abusing SetProp window property callbacks to execute attacker-controlled code inside a window-owning process",T1055,T1055.011
+68,"The Windows Notification Facility was weaponised to queue a kernel-mode callback that triggered shellcode execution in the context of the victim user-mode process",T1055,T1055.011
+69,"A complete PE image with a valid MZ/PE header was mapped into the address space of spoolsv.exe and executed by calling its entry point as a thread start routine",T1055,T1055.012
+70,"The loader reconstructed the payload's import table and applied base relocations before transferring execution to the injected PE's entry point within the host process",T1055,T1055.012
+71,"Forensic analysis identified a fully formed PE image in the memory of a running system process with no corresponding executable file on the file system",T1055,T1055.012
+72,"Process herpaderping was used to overwrite the loader file with a benign binary immediately after mapping, leaving scanning tools with an innocuous on-disk file",T1055,T1055.012
+73,"WerFault.exe was spawned as a host for PE injection — the implant wrote a complete executable into its address space before calling its entry point",T1055,T1055.012
+74,"A gargoyle-style memory technique was employed, alternating the injected PE's memory between non-executable and executable states to evade periodic memory scans",T1055,T1055.012
+75,"The implant staged payload inside a sacrificial process, then duplicated the section into lsass.exe, projecting a full PE image without using WriteProcessMemory",T1055,T1055.012
+76,"A vulnerable signed driver was exploited using BYOVD to map payload pages formatted as a PE image directly into a protected Windows system process",T1055,T1055.012
+77,"The implant injected a complete DLL image into a remote process by manually resolving its import table and applying relocations before redirecting a thread to the entry point",T1055,T1055.012
+78,"Process doppelgänging was identified — the attacker created a transacted file write of the payload, mapped it into a new process, then rolled back the transaction to remove file evidence",T1055,T1055.013
+79,"The implant exploited NTFS transactions to overwrite a legitimate binary's mapped image in memory, a technique known as process doppelgänging",T1055,T1055.013
+80,"Investigators confirmed a doppelgänging variant in which the actor substituted the in-memory process image via a rolled-back NTFS transaction before resuming execution",T1055,T1055.013
+81,"On compromised Linux endpoints, the threat actor set the LD_PRELOAD environment variable to force every spawned child process to load a malicious shared object",T1055,T1055.014
+82,"The implant used ptrace system calls to attach to a running process, inject shellcode into its address space, and redirect its instruction pointer to the payload",T1055,T1055.014
+83,"VDSO hijacking was observed on Linux hosts, with the actor overwriting the kernel-provided virtual DSO mapping to redirect userland system call dispatching",T1055,T1055.014
+84,"Fork-and-exec injection was used on Linux — the implant forked, injected a shared library into the child via ptrace, then exec'd the legitimate binary to disguise the process",T1055,T1055.014
+85,"The stealer registered a malicious in-process COM server under HKCU\Software\Classes\CLSID to intercept COM object instantiation by a targeted legitimate application",T1055,T1055.015
+86,"DCOM activation was abused to force the COM surrogate process (dllhost.exe) to load and execute the attacker's payload DLL as part of object instantiation",T1055,T1055.015
+87,"A custom application compatibility shim database was installed to redirect code execution within the target application to attacker-controlled code at runtime",T1055,T1055.015
+88,"COM object hijacking was leveraged by registering a rogue InprocServer32 entry under the current user's registry hive, intercepting COM loading by a privileged process",T1055,T1055.015
+89,"The actor executed a base64-encoded PowerShell command via a spawned child process to download and invoke the second-stage implant entirely from memory",T1059,T1059.001
+90,"Endpoint telemetry captured powershell.exe launched with the -EncodedCommand and -NonInteractive flags to bypass transcript logging and AMSI inspection",T1059,T1059.001
+91,"A heavily obfuscated PowerShell one-liner using nested Invoke-Expression calls was used to fetch and execute the stager payload from an actor-controlled C2",T1059,T1059.001
+92,"The threat group abused PowerShell remoting over WinRM to execute commands laterally across multiple domain-joined hosts without deploying additional tooling",T1059,T1059.001
+93,"A malicious Office macro spawned a PowerShell process with a download cradle that retrieved and reflectively loaded the final implant directly into memory",T1059,T1059.001
+94,"An IEX download cradle constructed from concatenated string fragments was used in PowerShell to evade static signature matching during payload retrieval",T1059,T1059.001
+95,"A batch file dropped during the initial access phase was used to enumerate local accounts, disable Windows Defender, and establish a new backdoor administrator account",T1059,T1059.003
+96,"Post-compromise activity included extensive use of cmd.exe to chain reconnaissance commands — including ipconfig, net user, and tasklist — immediately after gaining access",T1059,T1059.003
+97,"The actor used cmd /c with pipe-chained commands to collect system information and write the output to a staging file for later exfiltration",T1059,T1059.003
+98,"A macro embedded in a weaponised Word document written in VBA downloaded and executed the first-stage dropper on the victim machine immediately upon document open",T1059,T1059.005
+99,"A VBScript file was dropped to the Windows Temp directory and registered as a scheduled task to re-execute the implant daily, providing redundant persistence",T1059,T1059.005
+100,"FIN7-affiliated actors deployed a Python-based backdoor disguised as a point-of-sale diagnostic utility to avoid triggering AV signatures tuned for native executables",T1059,T1059.006
+101,"A malicious .js file delivered via a phishing email was executed by wscript.exe and used as the first stage, downloading and launching the primary payload",T1059,T1059.007
+102,"The actor leveraged a Node.js-based implant to achieve cross-platform post-exploitation capability without relying on compiled native binaries",T1059,T1059.007
+103,"Mimikatz was executed with the sekurlsa::logonpasswords module to extract plaintext credentials and NTLM hashes from LSASS process memory",T1003,T1003.001
+104,"The actor used the MiniDump export of comsvcs.dll via rundll32 to produce a memory dump of lsass.exe, avoiding deployment of Mimikatz on disk",T1003,T1003.001
+105,"ProcDump was transferred to the compromised host and used to create a full minidump of lsass.exe, which was subsequently exfiltrated for offline credential extraction",T1003,T1003.001
+106,"Memory forensics identified an unsigned process opening lsass.exe with PROCESS_VM_READ access — a strong indicator of credential material harvesting",T1003,T1003.001
+107,"The threat actor used Nanodump to create an LSASS dump with a deliberately malformed minidump signature to bypass AV detections targeting standard dump formats",T1003,T1003.001
+108,"The built-in Task Manager was used on a compromised host to create a memory dump of lsass.exe — a low-noise, living-off-the-land credential dumping approach",T1003,T1003.001
+109,"The reg save command was used against the HKLM\SAM and HKLM\SYSTEM hives to extract a copy of the local SAM database for offline password cracking",T1003,T1003.002
+110,"The threat operator exported the SAM and SYSTEM hives using reg.exe, transferred them to an attacker-controlled server, and cracked NTLM hashes with hashcat",T1003,T1003.002
+111,"Volume Shadow Copy access was leveraged to extract the SAM, SYSTEM, and SECURITY hive files from a shadow snapshot without locking the live registry",T1003,T1003.002
+112,"LSA secrets were extracted from the SECURITY hive to recover cached domain credentials and service account passwords stored by the Windows LSA subsystem",T1003,T1003.004
+113,"Mimikatz lsadump::secrets was executed on the compromised host to dump LSA secret values including service account plaintext credentials and machine account hashes",T1003,T1003.004
+114,"DCSync was performed using Mimikatz's lsadump::dcsync module, impersonating a domain controller to pull NTLM hashes for all privileged accounts without touching LSASS",T1003,T1003.006
+115,"The actor used Impacket's secretsdump.py to perform a DCSync attack against the domain controller and extract the NTLM hash for the krbtgt account",T1003,T1003.006
+116,"Network traffic analysis captured MS-DRSR replication requests originating from a workstation — a strong indicator of a DCSync credential extraction operation",T1003,T1003.006
+117,"FIN7 delivered a weaponised Word document via targeted spearphishing emails, with the embedded macro downloading a Carbanak implant on execution",T1566,T1566.001
+118,"Initial access was attributed to a phishing campaign distributing password-protected Excel files containing XLM 4.0 macros that executed the dropper on open",T1566,T1566.001
+119,"A ZIP attachment containing a digitally signed LNK file was used to evade mail gateway inspection — double-clicking the shortcut silently executed the stager",T1566,T1566.001
+120,"The phishing email delivered an ISO image containing a hidden PE and a visible decoy document; mounting the ISO and opening the decoy triggered execution",T1566,T1566.001
+121,"An HTML smuggling attachment was used to reconstruct and drop an encoded payload on the victim's local file system, bypassing email gateway attachment scanning",T1566,T1566.001
+122,"A PDF attachment was weaponised to present a fake Adobe Reader update prompt; clicking the link initiated a drive-by download of the first-stage implant",T1566,T1566.001
+123,"A targeted spearphishing email contained a link to an actor-controlled site that harvested Office 365 credentials via a convincing Microsoft login page clone",T1566,T1566.002
+124,"APT29 delivered spearphishing links via Microsoft Teams messages, impersonating IT support personnel to direct victims to a credential-harvesting landing page",T1566,T1566.002
+125,"The group used Evilginx2 to perform adversary-in-the-middle phishing, capturing both credentials and session cookies to bypass MFA on targeted accounts",T1566,T1566.002
+126,"OAuth consent phishing links were distributed that, when approved by the victim, granted the actor persistent access to the victim's mailbox and OneDrive",T1566,T1566.002
+127,"Victims were directed to a cloned SharePoint portal hosted on a typosquatted domain to harvest Microsoft 365 credentials with convincing UX",T1566,T1566.002
+128,"The actor sent targeted messages via LinkedIn, posing as a recruiter, with links to fake job offer documents that delivered the initial dropper on download",T1566,T1566.003
+129,"A WhatsApp-based spearphishing campaign delivered malicious links to employees of targeted financial institutions, redirecting them to credential-harvesting sites",T1566,T1566.003
+130,"Automated password guessing was observed against the externally exposed SSH management interface using a curated list of commonly used and default credentials",T1110,T1110.001
+131,"Brute force authentication attempts against the organisation's public-facing RDP service were identified in firewall logs, using a tool consistent with Hydra",T1110,T1110.001
+132,"The threat actor systematically submitted credential pairs to the web application login page at a rate designed to avoid account lockout thresholds",T1110,T1110.001
+133,"Captured NTLMv2 challenge-response hashes from a rogue SMB server were cracked offline using hashcat with a custom rule set and a compromised wordlist",T1110,T1110.002
+134,"The actor cracked captured Kerberos AS-REP hashes for accounts with pre-authentication disabled using GPU-accelerated offline cracking with hashcat",T1110,T1110.002
+135,"NTLM hashes extracted from the SAM database were subjected to offline cracking using a hybrid attack combining dictionary words with common corporate password patterns",T1110,T1110.002
+136,"A low-and-slow password spray was conducted against the organisation's Okta tenant, cycling through a list of target accounts with a single common password per wave",T1110,T1110.003
+137,"Authentication logs for the Microsoft 365 tenant showed distributed password spray activity originating from multiple residential IPs at a rate below lockout policy thresholds",T1110,T1110.003
+138,"The threat actor used MSOLSpray to conduct password spraying against Azure AD-backed authentication endpoints, avoiding detection by spacing requests over several hours",T1110,T1110.003
+139,"A password spray against the Citrix gateway was identified in which a single commonly used corporate password was tested against all enumerated employee accounts",T1110,T1110.003
+140,"Credential stuffing was performed against the customer portal using credential pairs sourced from a dark web breach compilation containing millions of records",T1110,T1110.004
+141,"Automated login attempts leveraging previously breached email and password combinations were identified targeting the organisation's VPN authentication endpoint",T1110,T1110.004
+142,"The actor deployed a credential stuffing tool that replayed leaked credentials from multiple prior breaches against the corporate web application login page",T1110,T1110.004
+143,"Web application firewall logs revealed high-volume credential stuffing traffic, with each attempt originating from a different IP address in a rotating residential proxy pool",T1110,T1110.004
+144,"Lateral movement was conducted via Remote Desktop Protocol using domain credentials harvested during the initial access phase, with connections observed to multiple internal servers",T1021,T1021.001
+145,"The actor enabled RDP on compromised hosts by modifying the fDenyTSConnections registry value and subsequently used it to spread to additional systems",T1021,T1021.001
+146,"Network traffic analysis captured RDP sessions originating from the initial beachhead host to three internal domain controllers over a 48-hour period",T1021,T1021.001
+147,"The threat actor tunnelled RDP traffic over an established SSH reverse tunnel to a compromised Linux server, bypassing network egress filtering",T1021,T1021.001
+148,"SharpRDP was used to execute commands on remote hosts over RDP without requiring a graphical session, reducing the operator's exposure footprint",T1021,T1021.001
+149,"The actor used PSExec to copy the implant to the ADMIN$ share and execute it as a service on remote hosts during the lateral movement phase",T1021,T1021.002
+150,"CrackMapExec was used to authenticate to discovered hosts via SMB using harvested credentials and execute payloads via the C$ administrative share",T1021,T1021.002
+151,"Lateral movement artefacts included the implant binary present in the Windows\Temp directory of multiple hosts, deposited via SMB administrative share access",T1021,T1021.002
+152,"Impacket's smbexec.py was used to execute commands on remote hosts without dropping a service binary, relying instead on named pipe communication",T1021,T1021.002
+153,"The actor pivoted to cloud-hosted Linux instances by authenticating via SSH using RSA private keys extracted from the initially compromised developer workstation",T1021,T1021.004
+154,"SSH-based lateral movement was identified on Linux endpoints, with the actor using harvested authorised_keys entries to authenticate without a password",T1021,T1021.004
+155,"WinRM over HTTPS was used as a lateral movement channel to execute PowerShell commands on internal servers without generating SMB-based detection artefacts",T1021,T1021.006
+156,"Evil-WinRM was used by the threat actor to establish an interactive remote management session on a targeted server using domain administrator credentials",T1021,T1021.006
+157,"The backdoor established persistence by writing a value pointing to the implant binary under HKCU\Software\Microsoft\Windows\CurrentVersion\Run",T1547,T1547.001
+158,"A registry Run key entry was added under HKLM\CurrentVersion\Run with a name resembling a legitimate Windows component to avoid casual inspection",T1547,T1547.001
+159,"The implant used reg.exe to create a Run key value that ensured execution at every user logon, surviving reboots and antivirus remediation attempts",T1547,T1547.001
+160,"Persistence was achieved via a RunOnce key that re-dropped and relaunched the implant on the next boot cycle if the primary Run key was removed",T1547,T1547.001
+161,"The actor added the implant's path to the HKLM Run key using a PowerShell one-liner executed in the context of a SYSTEM-level process",T1547,T1547.001
+162,"A WMI event subscription was registered to execute the second-stage stager at system startup as an alternative persistence mechanism",T1547,T1547.001
+163,"The threat actor modified the HKCU Run registry value to point to a renamed copy of the implant placed in the %APPDATA%\Roaming directory",T1547,T1547.001
+164,"The actor modified the Winlogon Userinit registry value to append the implant's path, ensuring execution during every interactive logon sequence",T1547,T1547.004
+165,"A malicious DLL was registered under the Winlogon Notify registry subkey to achieve persistent execution triggered at every Windows logon event",T1547,T1547.004
+166,"The implant installed itself as a Winlogon helper DLL, causing it to execute in session zero context before the user's desktop was fully initialised",T1547,T1547.004
+167,"Legitimate desktop LNK files were modified to prepend the implant path, causing it to execute silently alongside the intended application on each launch",T1547,T1547.009
+168,"A malicious shortcut was placed in the user's Startup folder, configured to launch the backdoor on every logon with a minimised window to avoid detection",T1547,T1547.009
+169,"Widely used application shortcuts in the Start Menu were backdoored to point to a wrapper script that launched both the implant and the legitimate application",T1547,T1547.009
+170,"A scheduled task was registered via schtasks.exe to execute the payload binary every 15 minutes under the SYSTEM account, providing privileged persistent execution",T1053,T1053.005
+171,"The threat actor used the ITaskService COM interface to create a scheduled task programmatically, leaving no schtasks.exe process creation event in the logs",T1053,T1053.005
+172,"A hidden scheduled task was identified within the Microsoft\Windows\SideShow task path, disguised among legitimate tasks to avoid manual inspection",T1053,T1053.005
+173,"The implant modified an existing legitimate Windows maintenance task to append a malicious action step pointing to the payload executable",T1053,T1053.005
+174,"The actor created a scheduled task named 'Windows Update Helper' configured to run at user logon with highest available privileges",T1053,T1053.005
+175,"Analysis of the compromised host's task scheduler revealed a task registered with XML-based configuration that bypassed standard schtasks.exe telemetry",T1053,T1053.005
+176,"A scheduled task was used to re-deploy the implant from a hardcoded URL if the main executable was deleted, providing resilient persistence",T1053,T1053.005
+177,"The threat actor exported and re-imported a modified task XML definition using schtasks /create /xml to register the persistence mechanism without invoking common command-line patterns",T1053,T1053.005
+178,"A cron entry was added under /etc/cron.d on the compromised Linux server to re-establish the reverse shell every 30 minutes as root",T1053,T1053.003
+179,"The actor modified the root crontab to include an entry that executed the implant script at reboot, providing persistent access following system restarts",T1053,T1053.003
+180,"Forensic examination of the compromised Linux host revealed a cron entry that downloaded and executed a shell script from an actor-controlled server on an hourly basis",T1053,T1053.003
+181,"The at command was used to schedule remote execution of the dropper on a target host during lateral movement, avoiding the creation of a persistent scheduled task",T1053,T1053.002
+182,"at.exe was observed scheduling the payload to execute 10 minutes after the command was issued, a technique used to delay execution and complicate forensic attribution",T1053,T1053.002
+183,"The implant modified the Windows Defender policy registry key to disable real-time monitoring before deploying its payload to avoid immediate detection",T1562,T1562.001
+184,"The threat actor stopped the Windows Defender service and removed its definition files using PowerShell, leaving the host unprotected for subsequent payload deployment",T1562,T1562.001
+185,"All running processes associated with the installed EDR agent were killed using taskkill.exe before the actor proceeded with credential dumping",T1562,T1562.001
+186,"A WDAC bypass technique was applied to prevent the EDR product's driver from loading at the next boot cycle, effectively blinding host-based monitoring",T1562,T1562.001
+187,"The threat actor invoked the endpoint protection product's own administrative uninstaller using the correct management password, cleanly removing it",T1562,T1562.001
+188,"The implant's installation directory was added to the Windows Defender exclusion list via PowerShell Set-MpPreference to prevent subsequent scanning of its files",T1562,T1562.001
+189,"Before initiating lateral movement, the actor terminated all security product agent processes identified by a hardcoded list of known EDR and AV process names",T1562,T1562.001
+190,"A GPO modification was used to disable Windows security event logging across all domain-joined endpoints before the actor began their destructive actions",T1562,T1562.002
+191,"The actor invoked wevtutil.exe to clear the Security, System, and Application event logs on the compromised host immediately following privilege escalation",T1562,T1562.002
+192,"The auditpol.exe utility was used to set all audit subcategories to No Auditing, preventing the endpoint from generating security-relevant event log entries",T1562,T1562.002
+193,"netsh advfirewall set allprofiles state off was executed on compromised hosts to disable host-based firewall rules and permit inbound C2 traffic",T1562,T1562.004
+194,"The threat actor added a Windows Firewall inbound rule permitting traffic to a high-numbered port used by the implant's listener to prevent connection blocking",T1562,T1562.004
+195,"Host-based firewall rules were modified via netsh to permit outbound communication on the non-standard port used for command-and-control beaconing",T1562,T1562.004
+196,"The actor gained access to a network management appliance by authenticating with the factory-default administrator credentials that had never been changed",T1078,T1078.001
+197,"Initial access to the cloud infrastructure management console was obtained using default vendor credentials present on an internet-exposed administrative interface",T1078,T1078.001
+198,"The threat actor authenticated to the domain controller using a compromised domain administrator account obtained via credential dumping from an earlier compromised host",T1078,T1078.002
+199,"A domain service account with domain-wide read access was abused for lateral movement, authenticating to file servers and SQL instances across the network",T1078,T1078.002
+200,"A developer account with workstation local administrator rights was leveraged for lateral movement across the development environment without triggering privileged account alerts",T1078,T1078.002
+201,"The actor used a legitimate help desk domain account — compromised weeks prior — to access the ticketing system and escalate privileges using a social engineering pretext",T1078,T1078.002
+202,"A shared local administrator account with an identical password across all workstations was used by the actor for lateral movement via SMB after credential extraction",T1078,T1078.003
+203,"The built-in local Administrator account, re-enabled via net user, was used to authenticate to systems where domain accounts lacked local admin rights",T1078,T1078.003
+204,"A backdoor local account created during an earlier intrusion phase was used weeks later to re-establish persistent access after the initial implant was remediated",T1078,T1078.003
+205,"Azure AD credentials stolen via an adversary-in-the-middle phishing kit were used to authenticate to Microsoft 365 services and access sensitive SharePoint content",T1078,T1078.004
+206,"The actor abused a misconfigured Azure managed identity attached to a compute instance to access storage accounts and retrieve secrets from Key Vault",T1078,T1078.004
+207,"OAuth access tokens intercepted via session hijacking were replayed against the Microsoft Graph API to read mail, contacts, and OneDrive files",T1078,T1078.004
+208,"A compromised AWS IAM access key with AdministratorAccess permissions was used to enumerate S3 buckets and exfiltrate sensitive configuration data",T1078,T1078.004
+209,"The threat actor created a local administrator account using net user /add and immediately added it to the local Administrators group via net localgroup",T1136,T1136.001
+210,"A backdoor local user account named 'svc_backup' was created to blend with legitimate service accounts and avoid detection in user enumeration output",T1136,T1136.001
+211,"PowerShell's New-LocalUser and Add-LocalGroupMember cmdlets were used to create a privileged backdoor account with administrative rights",T1136,T1136.001
+212,"A hidden local account with a trailing dollar sign was created to suppress it from the default net user listing on the compromised workstation",T1136,T1136.001
+213,"The actor created a local account and added it to the Remote Desktop Users group to enable persistent RDP access without domain credential exposure",T1136,T1136.001
+214,"A new local administrator account was created using the computer management console (compmgmt.msc) to avoid generating schtasks or net.exe command-line artefacts",T1136,T1136.001
+215,"A local account mirroring the naming convention of existing IT service accounts was provisioned on multiple hosts as a redundant persistence mechanism",T1136,T1136.001
+216,"A new domain user account was created via LDAP and immediately added to the Domain Admins group, providing the actor with persistent privileged domain access",T1136,T1136.002
+217,"The threat actor provisioned a rogue Active Directory user object with a name resembling a decommissioned employee account to avoid scrutiny",T1136,T1136.002
+218,"The attacker used Impacket's addcomputer.py to provision a machine account in the domain, which was subsequently used as a Kerberos principal for delegated access",T1136,T1136.002
+219,"A new AWS IAM user with programmatic access and AdministratorAccess policy attached was created as a persistent backdoor inside the compromised AWS organisation",T1136,T1136.003
+220,"The actor provisioned a rogue Azure AD guest user account and assigned it Contributor-level permissions on a subscription containing sensitive workloads",T1136,T1136.003
+221,"A Google Cloud service account with owner-level IAM permissions was created in a non-production project as an out-of-band persistent access mechanism",T1136,T1136.003
+222,"The implant was protected with a custom packer that generated a unique binary hash on each compilation run, defeating reputation-based and hash-based detection",T1027,T1027.002
+223,"A commercial packer was applied to the dropper executable to encrypt its payload section and produce a stub that decrypted and loaded the real code at runtime",T1027,T1027.002
+224,"The actor used a runtime packer that decrypted and loaded the PE payload directly into memory, leaving security tools with only the encrypted stub on disk",T1027,T1027.002
+225,"C source code for the implant was delivered to the victim host and compiled on-system using an already-installed GCC toolchain to bypass binary-scanning controls",T1027,T1027.004
+226,"The actor transferred fragmented source code to the victim host and assembled and compiled it locally using MSBuild, avoiding delivery of a precompiled executable",T1027,T1027.004
+227,"PowerShell commands were split across multiple concatenated string variables and joined at runtime to defeat string-matching based command-line detection rules",T1027,T1027.010
+228,"Environment variable substitution was used to construct cmd.exe commands character by character, producing obfuscated command lines that evaded script-block logging patterns",T1027,T1027.010
+229,"The actor used certutil -decode to reconstruct a base64-encoded payload from a text file, avoiding direct download of a PE and leveraging a trusted system binary",T1027,T1027.010
+230,"The payload was delivered as a multi-layered obfuscated PowerShell script that peeled each encoding layer using Invoke-Expression to reveal and execute the next stage",T1027,T1027.013
+231,"The final-stage implant was AES-256 encrypted with a key derived from a unique hardware identifier on the victim host, preventing offline analysis of the sample",T1027,T1027.013
+232,"The actor concealed the implant configuration data within the EXIF metadata of a JPEG file uploaded to a legitimate image hosting service",T1027,T1027.013
+233,"The dropper embedded its second-stage payload as a base64-encoded string appended to a JPEG comment field, masquerading as a legitimate image file",T1027,T1027.013
+234,"XOR-encoded configuration strings were embedded within the implant's binary and decoded at runtime using a single-byte key derived from the process start time",T1027,T1027.013
+235,"The Cobalt Strike beacon was configured with a malleable C2 profile that mimicked legitimate jQuery download traffic over HTTPS, blending into normal web traffic",T1071,T1071.001
+236,"Command-and-control communications were conducted exclusively over HTTPS using a TLS certificate issued for a domain typosquatting a legitimate cloud provider",T1071,T1071.001
+237,"The implant transmitted collected data to its C2 via HTTP POST requests with payloads structured to resemble standard web analytics beacon traffic",T1071,T1071.001
+238,"Beacon traffic was routed through a compromised legitimate e-commerce site acting as a domain-fronted reverse proxy to the actual C2 infrastructure",T1071,T1071.001
+239,"The Brute Ratel C4 framework was deployed with an HTTP profile mimicking Microsoft Graph API responses to blend C2 traffic with legitimate Microsoft 365 activity",T1071,T1071.001
+240,"The implant exfiltrated collected data to an actor-controlled FTP server by establishing outbound connections over port 21, which was permitted by the firewall policy",T1071,T1071.002
+241,"SFTP was used to exfiltrate staged archives to an actor-controlled server, blending with legitimate administrative file transfer activity observed in network baselines",T1071,T1071.002
+242,"The implant received tasking by polling a compromised email inbox via IMAP, reading commands embedded in the body of specially crafted message subjects",T1071,T1071.003
+243,"Collected data was exfiltrated via SMTP by encoding it into multi-part email attachments sent to an actor-controlled inbox, using a legitimate mail relay as a relay hop",T1071,T1071.003
+244,"The Sliver implant was configured to use DNS over HTTPS for command-and-control, tunnelling all tasking through encrypted DNS queries to a controlled resolver",T1071,T1071.004
+245,"C2 communication was conducted by encoding commands into DNS TXT record query names directed at an actor-controlled authoritative name server",T1071,T1071.004
+246,"Dnscat2 was deployed to tunnel a full interactive shell session over DNS, with all traffic appearing as standard recursive DNS queries to perimeter monitoring tools",T1071,T1071.004
+247,"The implant used a DNS-based dead drop resolver, querying a TXT record on a legitimate public DNS provider to retrieve the current C2 IP address",T1071,T1071.004
+248,"Rubeus was used to request Kerberos TGS tickets for all identified SPNs, with the encrypted tickets written to disk for subsequent offline cracking",T1003,T1003.004
+249,"The actor authenticated to an additional internal subnet via RDP using credentials recovered from a browser credential store on the first compromised endpoint",T1021,T1021.001
+250,"A PowerShell script leveraging the Microsoft Graph SDK was used to enumerate and export mailbox content from compromised Exchange Online accounts",T1059,T1059.001
